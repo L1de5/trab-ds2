@@ -1,12 +1,11 @@
 import psycopg2
 from autor import Autor
+from conexaoDao import Conexao
 class autorDao:
 
     
     def listar():
-        con = psycopg2.connect('host=localhost port=1234 dbname=pythonic user=postgres password=postgres')
-        cur = con.cursor()
-        
+        con = Conexao.conectar()
         try:
             with con.cursor() as cur:
                 cur.execute('SELECT * FROM "Autor"') 
@@ -21,7 +20,7 @@ class autorDao:
         except:
             print("Deu Ruim")
     def buscar(cod):
-        con = psycopg2.connect('host=localhost port=1234 dbname=pythonic user=postgres password=postgres')
+        con = Conexao.conectar()
         try:
             with con.cursor() as cur:
                 cur.execute("""SELECT * FROM "Autor" WHERE cod=%s""", [cod] )
@@ -32,29 +31,33 @@ class autorDao:
                 return a
         except:
             print("Deu Ruim")
-    # def editar(cod, a):
-    #     con = psycopg2.connect('host=localhost port=1234 dbname=pythonic user=postgres password=postgres')
-    #     try:
-    #         with con.cursor() as cur:
-    #             cur.execute("""UPDATE "Autor" SET nome = 'ja2o' , email = 'odi2o.com' WHERE cod = %s""", (cod, ))
-    #             cur.close()
-    #     except:
-    #         print("Deu Ruim")
-    def inserir(a):
-        con = psycopg2.connect('host=localhost port=1234 dbname=pythonic user=postgres password=postgres')
+    def editar(a):
+        con = Conexao.conectar()
         try:
             with con.cursor() as cur:
-                print(cur.execute("""INSERT INTO "Autor" (nome, email) VALUES ('jasdaus', 'asdasd') RETURNING cod"""))
+                cur.execute("""UPDATE "Autor" SET nome = %s , email = %s WHERE cod = %s""", [a.nome, a.email, a.cod])
+                con.commit()
                 cur.close()
+        except:
+            print("Deu Ruim")
+    def inserir(a):
+        con = Conexao.conectar()
+        try:
+            with con.cursor() as cur:
+                a.cod = cur.execute("""INSERT INTO "Autor" (nome, email) VALUES (%s, %s) RETURNING cod""", [a.nome, a.email])
+                con.commit()
+                cur.close()
+                con.close()
         except:
             print("Deu Ruim")
     
     def deletar(cod):
-        con = psycopg2.connect('host=localhost port=1234 dbname=pythonic user=postgres password=postgres')
+        con = Conexao.conectar()
         try:
-            type(cod)
-            cur = con.cursor()
-            cur.execute("""DELETE FROM "Autor" WHERE cod = %s""", [cod])
-            cur.close()
+            with con.cursor() as cur:
+                cur.execute("""DELETE FROM "Autor" WHERE cod=%s""", [cod] )
+                con.commit()
+                cur.close()
+                con.close()
         except:
             print("Deu Ruim")

@@ -1,18 +1,22 @@
-from datime import datetime
+import datetime
+import decimal
 
 
 class Trabalho:
 
-    def __init__(self, conteudo, dataEntrega, nota, titulo):
-        self._cod = None
+    def __init__(self, conteudo, nota, dataEntrega, titulo):
         self._conteudo = conteudo
-        self._dataEntrega = dataEntrega
         self._nota = nota
+        self._dataEntrega = dataEntrega
         self._titulo = titulo
         self._dataHoraAtualizacao = datetime.datetime.now()
     @property
     def cod(self):
         return self._cod
+    
+    @cod.setter
+    def cod(self, cod):
+        self._cod = cod
 
     @property
     def conteudo(self):
@@ -51,8 +55,8 @@ class Trabalho:
         return self._dataHoraAtualizacao
 
     @dataHoraAtualizacao.setter
-    def dataHoraAtualizacao(self):
-        self._dataHoraAtualizacao =  datetime.datetime.now()
+    def dataHoraAtualizacao(self, dataHoraAtualizacao):
+        self._dataHoraAtualizacao =  dataHoraAtualizacao
     
     def __str__(self):
-        return 'Código: ' + str(self._cod) + '\n conteudo: ' + self._conteudo + '\n Data de Entrega: ' + self._dataEntrega.strftime('%d/%m/%Y') + '\n nota: ' + self._nota + '\n Titulo:' + self_titulo + '\n Data e Hora de Atualização: ' + self._dataEntrega
+        return 'Código: ' + str(self._cod) + '\n conteudo: ' + self._conteudo + '\n Data de Entrega: ' + str(self._dataEntrega) + '\n nota: ' + str(self._nota) + '\n Titulo:' + self._titulo + '\n Data e Hora de Atualização: ' + str(self._dataHoraAtualizacao)
