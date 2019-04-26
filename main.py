@@ -8,27 +8,28 @@ from autor import Autor
 while(True):
     try:
         n = int(input("Você quer interagir com? 0-Autor/1-Trabalho/2-Sair: "))
-
-        if(n < 0 or n > 2):
-            raise NameError
-    except NameError:
+    except ValueError:
         print("Valor Inválido!!")
+
+    try:
+        if(n < 0 or n > 2):
+            raise NameError   
+    except NameError:
+        print("Valor Inválido!!") 
         
     
     if(n == 0):
 
         try:
-            n = int(input("O que você precisa? 0-Inserir/1-Remover/2-Editar/3-Buscar/4-Listar/5-Sair: "))
-
+            n = int(input("Você quer interagir com? 1-Remover/2-Salvar/3-Buscar/4-Listar/5-Sair: "))
+        except ValueError:
+            print("Valor Inválido!!")
+        try:
             if(n < 0 or n > 5):
                 raise NameError
         except NameError:
             print("Valor Inválido!!")
-        if(n == 0):
-            nome = str(input("Inserir o Nome:"))
-            email = str(input("Inserir a E-mail:"))
-            a = Autor(nome, email)            
-            r = autorDao.inserir(a)
+
         if(n == 1):
             cod = int(input("Insira o Código:"))
             a = autorDao.deletar(cod)
@@ -38,7 +39,7 @@ while(True):
             email = str(input("Inserir a E-mail:"))
             a = Autor(nome, email)
             a.cod = cod
-            r = autorDao.editar(a)
+            r = autorDao.salvar(a)
         if(n == 3):
             cod = int(input("Insira o Código:"))
             type(cod)
@@ -53,39 +54,37 @@ while(True):
     elif(n == 1):
         
         try:
-            n = int(input("O que você precisa? 0-Inserir/1-Remover/2-Editar/3-Buscar/4-Listar/5-Sair: "))
-
+            n = int(input("Você quer interagir com? 1-Remover/2-Salvar/3-Buscar/4-Listar/5-Sair: "))
+        except ValueError:
+            print("Valor Inválido!!")
+        
+        try:
             if(n < 0 or n > 5):
                 raise NameError
         except NameError:
             print("Valor Inválido!!")
         
-        if(n == 0):
-            conteudo = str(input("Qual o Conteúdo?"))
-            nota = int(input("Qual a nota?"))
-            dia = int(input("Dia de Entrega?"))
-            mes = int(input("Mês de Entrega?"))
-            ano = int(input("Ano de Entrega?"))
-            dataEntrega = datetime.datetime(ano, mes, dia)
-            titulo = str(input("Qual o titulo?"))
-            t = Trabalho( conteudo, nota, dataEntrega, titulo)            
-            r = trabalhoDao.inserir(t)
         if(n == 1):
             cod = int(input("Insira o Código:"))
             t = trabalhoDao.deletar(cod)
         if(n == 2):
-            cod = int(input("Inserir Código:"))
-            conteudo = str(input("Qual o Conteúdo?"))
-            nota = int(input("Qual a nota?"))
-            dia = int(input("Dia de Entrega?"))
-            mes = int(input("Mês de Entrega?"))
-            ano = int(input("Ano de Entrega?"))
-            dataEntrega = datetime.datetime(ano, mes, dia)
-            titulo = str(input("Qual o titulo?"))
-            t = Trabalho( conteudo, nota, dataEntrega, titulo)
-            t.cod = cod
-            t.dataHoraAtualizacao = datetime.datetime.now()
-            r = trabalhoDao.editar(t)
+            try:
+                cod = int(input("Inserir Código:"))
+                conteudo = str(input("Qual o Conteúdo?"))
+                nota = int(input("Qual a nota?"))
+                dia = int(input("Dia de Entrega?"))
+                mes = int(input("Mês de Entrega?"))
+                ano = int(input("Ano de Entrega?"))
+                dataEntrega = datetime.datetime(ano, mes, dia)
+                titulo = str(input("Qual o titulo?"))
+                codAutor = int(input("Inserir Código do Autor:"))
+                t = Trabalho(conteudo, nota, dataEntrega, titulo)
+                t.cod = cod
+                t.dataHoraAtualizacao = datetime.datetime.now()
+                r = trabalhoDao.salvar(t, codAutor)
+            except ValueError:
+                print("Informou errado")
+
         if(n == 3):
             cod = int(input("Insira o Código:"))
             type(cod)
